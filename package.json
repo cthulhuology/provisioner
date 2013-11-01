@@ -11,7 +11,13 @@
 	"bin": { 
 		"provisioner" : "./bin/provisioner" 
 	},
-	"dependencies": { },
+	"dependencies": { 
+		"pontifex" : ">=0.0.6",
+		"pontifex.ws" : ">=0.0.5",
+		"opifex" : ">=0.0.8",
+		"opifex.docker" : ">=0.0.3",
+		"express" : ">=3.4.3"
+	},
 	"devDependencies": {},
 	"optionalDependencies": {},
 	"engines": {
