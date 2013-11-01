@@ -9,7 +9,7 @@ Provisioner = function(method) {
 		self.connected = false
 		self.queue = 'ws' + Math.random()
 		Message.attach('ws://' + document.location.hostname + ':8888/wot-management/docker-out/%23/' + self.queue +  '/docker-in/ws',
-			[ 'running', 'images', 'containers' ])
+			'running', 'images', 'containers' )
 		// Subscribe ourself to the docker responses
 		self.ack('docker','connected')
 		return self

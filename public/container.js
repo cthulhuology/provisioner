@@ -43,7 +43,7 @@ Container = function(method) {
 		this.width = Screen('measureText',this.module)
 		Screen('restore')
 		return this
-	}
 	default:
 		return this
+	}
 }
