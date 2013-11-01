@@ -15,43 +15,45 @@ Host = function(method) {
 		self.height = 100
 		self.containers = []
 		self.status = 'up'
-		Screen.show(self)
-		Hub.send('subscribe','down',self)
+		Screen('show',self)
+		self.ack('down')
 		return self
 	case 'status' :
 		this.status = message[1]
 		return this
 	case 'add':
 		var container = message[1]
-		container.send('at', this.x + 20, this.y + 24 * this.containers.length + 20)
+		container('at', this.x + 20, this.y + 24 * this.containers.length + 20)
 		this.containers.push(container)
 		return this	
 	case 'show':
-		Screen.show(this)
+		Screen('show',this)
 		return this
 	case 'hide':
-		Screen.hide(this)
+		Screen('hide',this)
 		return this
 	case 'draw':
-		Screen.save()
-		Screen.font = '24px Arial'
-		Screen.strokeStyle = 'black'
-		Screen.fillStyle = 'black'
+		Screen('save')
+			('font', '24px Arial')
+			('strokeStyle', 'black')
+			('fillStyle', 'black')
 		var x = this.x
 		var y = this.y
 		var height = this.containers.length * 24 + 56
-		var width = Screen.measureText(this.hostname).width
-		Screen.save()
-		Screen.fillStyle = this.status == 'up' ? 'green' : 'red'
-		Screen.fillText(this.hostname, x, y)
-		Screen.restore()
+		var width = Screen('measureText',this.hostname)
+		Screen('save')
+			('fillStyle', this.status == 'up' ? 'green' : 'red')
+			('fillText', this.hostname, x, y)
+			('restore')
 		for (var j = 0; j < this.containers.length; ++j)
 			width = width > this.containers[j].width ?
 				width :
 				this.containers[j].width
-		Screen.rect(x, y+8, width, height)
-		Screen.stroke()
-		Screen.restore()
+		Screen('beginPath')
+			('rect',x, y+8, width, height)
+			('closePath')
+			('stroke')
+			('restore')
 		this.width = width
 		this.height = height
 		return this
@@ -61,14 +63,10 @@ Host = function(method) {
 		if ( x < this.x || x > this.x + this.width || y < this.y || y > this.y + this.height) return;
 		this.dx = x - this.x
 		this.dy = y - this.y
-		Hub.send('unsubscribe','down',this)
-		Hub.send('subscribe','up',this)
-		Hub.send('subscribe','move',this)
+		this.ack('up','move').nack('down')
 		return this
 	case 'up':
-		Hub.send('subscribe','down',this)
-		Hub.send('unsubscribe','up',this)
-		Hub.send('unsubscribe','move',this)
+		this.ack('down').nack('up','move')
 		return this
 	case 'move':
 		var x = message[1]
@@ -76,7 +74,7 @@ Host = function(method) {
 		this.x = x - this.dx
 		this.y = y - this.dy
 		for (var j = 0; j < this.containers.length; ++j) 
-			this.containers[j].send('at', this.x + 20, this.y + 24 * j + 20)
+			this.containers[j]('at', this.x + 20, this.y + 24 * j + 20)
 		return this
 	}
 
