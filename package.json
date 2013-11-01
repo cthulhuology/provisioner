@@ -1,0 +1,21 @@
+{
+	"author": "David Goehrig",
+	"name": "provisioner",
+	"license" : "MIT",
+	"description": "A Drag and Drop Provisioning Interface",
+	"version": "0.0.1",
+	"repository": {
+		"url": "http://github.com/cthulhuology/provisioner"
+	},
+	"main": "./lib/Provisioner.coffee",
+	"bin": { 
+		"provisioner" : "./bin/provisioner" 
+	},
+	"dependencies": { },
+	"devDependencies": {},
+	"optionalDependencies": {},
+	"engines": {
+		"node": ">=0.10.15"
+	}
+}
+

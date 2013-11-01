@@ -1,0 +1,11 @@
+#!/usr/bin/env coffee
+
+provisioner = require 'provisioner'
+pontifex = require 'pontifex'
+opifex = require 'opifex'
+config = require "#{process.env.HOME}/.provisioner.coffee"
+
+opifex(config.management, 'docker')
+pontifex(config.bridge)(config.websocket)
+provisioner.listen(config.port)
+
